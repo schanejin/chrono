@@ -20,8 +20,10 @@ func (c *Chrono) ElapsedTime() time.Duration {
 }
 func (c *Chrono) Stop()  {}
 func (c *Chrono) Pause() {}
-func (c *Chrono) Reset() {}
-func (c *Chrono) Lap()   {}
+func (c *Chrono) Reset() {
+	c.start = time.Time{}
+}
+func (c *Chrono) Lap() {}
 
 func (c *Chrono) String() string {
 	return fmt.Sprintf("[start: %s current: %s elapsed: %s]\n",

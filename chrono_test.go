@@ -33,8 +33,14 @@ func TestChrono_ElapsedTime(t *testing.T) {
 }
 func TestChrono_Stop(t *testing.T)  {}
 func TestChrono_Pause(t *testing.T) {}
-func TestChrono_Reset(t *testing.T) {}
-func TestChrono_Lap(t *testing.T)   {}
+func TestChrono_Reset(t *testing.T) {
+	c := New()
+	c.Reset()
+	if !c.start.IsZero() {
+		t.Error("Reset should reset the initial start timer")
+	}
+}
+func TestChrono_Lap(t *testing.T) {}
 
 // return rounded version of x with prec precision
 func RoundFloat(x float64, prec int) float64 {
