@@ -31,13 +31,29 @@ func TestChrono_ElapsedTime(t *testing.T) {
 		}
 	}
 }
-func TestChrono_Stop(t *testing.T)  {}
+func TestChrono_Stop(t *testing.T) {
+	c := New()
+	time.Sleep(time.Millisecond * 300)
+	c.Stop()
+	time.Sleep(time.Millisecond * 200)
+
+	ms := int(RoundFloat(float64(c.ElapsedTime()/time.Millisecond), 0))
+	if ms != 300 {
+		t.Errorf("Stop: got: %d expected: %d\n", ms, 300)
+	}
+}
 func TestChrono_Pause(t *testing.T) {}
 func TestChrono_Reset(t *testing.T) {
 	c := New()
 	c.Reset()
 	if !c.start.IsZero() {
 		t.Error("Reset should reset the initial start timer")
+	}
+	c.Start()
+	time.Sleep(time.Millisecond * 400)
+	ms := int(RoundFloat(float64(c.ElapsedTime()/time.Millisecond), 0))
+	if ms != 400 {
+		t.Errorf("Reset: got: %d expected: %d\n", ms, 400)
 	}
 }
 func TestChrono_Lap(t *testing.T) {}

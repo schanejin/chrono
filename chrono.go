@@ -7,9 +7,8 @@ import (
 )
 
 type Chrono struct {
-	start   time.Time
-	stop    time.Time
-	elapsed time.Duration
+	start time.Time
+	stop  time.Time
 }
 
 func New() *Chrono {
@@ -18,13 +17,14 @@ func New() *Chrono {
 	}
 }
 func (c *Chrono) ElapsedTime() time.Duration {
-	c.elapsed = time.Since(c.start)
-	return c.elapsed
+	if c.stop.After(c.start) {
+		return c.stop.Sub(c.start)
+	}
+	return time.Since(c.start)
 }
 
 // Stop stops the timer. To resume the timer Start() needs to be called again
 func (c *Chrono) Stop() {
-	c.elapsed = c.ElapsedTime()
 	c.stop = time.Now()
 }
 
