@@ -7,14 +7,18 @@ import (
 )
 
 type Chrono struct {
-	start time.Time
-	stop  time.Time
+	start, stop, lap time.Time
+	laps             []time.Duration
 }
 
 func New() *Chrono {
-	return &Chrono{
-		start: time.Now(),
-	}
+	c := &Chrono{}
+	c.init()
+	return c
+}
+func (c *Chrono) init() {
+	c.start, c.lap = time.Now(), time.Now()
+	c.laps = make([]time.Duration, 0)
 }
 func (c *Chrono) ElapsedTime() time.Duration {
 	if c.stop.After(c.start) {
@@ -32,17 +36,35 @@ func (c *Chrono) Stop() {
 // timer. if a Reset() was invoked it starts a nes session.
 func (c *Chrono) Start() {
 	if c.start.IsZero() { //reseted
-		c.start = time.Now()
+		c.init()
 	} else { //stopped
 		c.start = c.start.Add(time.Since(c.stop))
 	}
 }
 func (c *Chrono) Pause() {}
 func (c *Chrono) Reset() {
-	c.start = time.Time{}
+	c.start, c.stop, c.lap = time.Time{}, time.Time{}, time.Time{}
+	c.laps = nil
 }
-func (c *Chrono) Lap() {}
 
+// Lap takes and stores the current lap time and returns the elapsed time
+// since the latest lap.
+func (c *Chrono) Lap() time.Duration {
+	if c.stop.After(c.start) || c.lap.IsZero() {
+		return time.Duration(0)
+	}
+	lap := time.Since(c.lap)
+	c.lap = time.Now()
+	c.laps = append(c.laps, lap)
+	return lap
+
+}
+
+func (c *Chrono) Laps() []time.Duration {
+	return c.laps
+}
+
+// String returns the representation of a single Chrono instance
 func (c *Chrono) String() string {
 	return fmt.Sprintf("[start: %s current: %s elapsed: %s]\n",
 		c.start.Format(time.Stamp), time.Now().Format(time.Stamp), c.ElapsedTime())

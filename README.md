@@ -17,6 +17,20 @@ duration := c.ElapsedTime()
 // reset the stopwatch
 c.Reset()
 
+// or stop the stopWatch
+c.Stop()
+
+// resume the timer afeter a reset/stop
+c.Start()
+
+// create a lap
+lap1 := c.Lap()
+lap2 := c.Lap()
+lap3 := c.Lap()
+
+// get a list of all lap durations
+list := c.Laps()
+
 //string representation of stopwatch
 fmt.Printf("chrono: %s", c)
 ```
