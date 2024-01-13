@@ -1,4 +1,4 @@
-# chrono [![Go Reference](https://pkg.go.dev/badge/github.com/schanejin/chrono.svg)](https://pkg.go.dev/github.com/schanejin/chrono)
+# chrono 
 Chrono implements the common functions of a stop-watch.
 For usage see examples below or click on the godoc badge.
 
@@ -8,7 +8,7 @@ go get github.com/schanejin/chrono
 ```
  ## Example
 ```go
-// create a set with zero items
+// create a new chrono, the timer start immediately
 c := chrono.New()
 
 // get elapased duration at any time
